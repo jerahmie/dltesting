@@ -7,8 +7,12 @@
 import os
 import shutil
 
-original_dataset_dir = os.path.join('/mnt','Data','kaggle','dogs-vs-cats','train')
-base_dir = os.path.join('/mnt','Data','kaggle','dogs-vs-cats-small')
+#original_dataset_dir = os.path.join('/mnt','Data','kaggle','dogs-vs-cats','train')
+#base_dir = os.path.join('/mnt','Data','kaggle','dogs-vs-cats-small')
+file_path=os.path.dirname(os.path.abspath(__file__))
+original_dataset_dir = os.path.join(file_path,'dogs_vs_cats','train')
+base_dir = os.path.join(file_path, 'dogs_vs_cats_small')
+
 try:
     os.mkdir(base_dir)
 except FileExistsError:
