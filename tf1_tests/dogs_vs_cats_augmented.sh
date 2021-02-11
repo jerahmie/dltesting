@@ -20,4 +20,4 @@ singularity exec --nv -B $TRAIN_DATA:/train_data \
     -B $VALIDATION_DATA:/validation_data \
     -B $SAVE_DIR:/save_data \
     ${container_home}/tensorflow_1_15_4.sif \
-    python ${HOME}/workspace/dltesting/tf1_tests/dogs_vs_cats.py
+    python ${HOME}/workspace/dltesting/tf1_tests/dogs_vs_cats_augmented.py
