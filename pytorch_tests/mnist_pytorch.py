@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 """ PyTorch implementation of MNIST convnet.
+    This closesly follows the following example:
+    https://nextjournal.com/gkoehler/pytorch-mnist
 """
 import torch
 import torch.nn as nn
@@ -36,7 +38,7 @@ def train(epoch):
         optimizer.step()
         if batch_idx % log_interval == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
+ https://nextjournal.com/gkoehler/pytorch-mnist               epoch, batch_idx * len(data), len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.item()))
             train_losses.append(loss.item())
             train_counter.append(
