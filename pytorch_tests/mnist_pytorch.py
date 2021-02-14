@@ -28,9 +28,12 @@ class Net(nn.Module):
         x = self.fc2(x)
         return F.log_softmax(x)
 
-def train(epoch):
+def train(epoch, device):
     network.train()
     for batch_idx, (data, target) in enumerate(train_loader):
+        # Transfer to gpu:
+        data, target = data.to(device), target.to(device)
+        # Run training
         optimizer.zero_grad()
         output = network(data)
         loss = F.nll_loss(output, target)
@@ -46,14 +49,16 @@ def train(epoch):
             torch.save(network.state_dict(), '/results/model.pth')
             torch.save(optimizer.state_dict(), '/results/optimizer.pth')
 
-def test():
-    """ Test
+def test(device):
+    """ Evaluate the convnet against a validation data set.
     """
     network.eval()
     test_loss = 0
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
+            # Send to GPU
+            data, target = data.to(device), target.to(device)
             output = network(data)
             test_loss += F.nll_loss(output, target, size_average=False).item()
             pred = output.data.max(1, keepdim=True)[1]
@@ -66,6 +71,7 @@ def test():
 
 if __name__ == "__main__":
     #HyperParameters 
+    print("Found CUDA-enbaled GPUs: ", torch.cuda.device_count())
     n_epochs = 3
     learning_rate = 0.01
     momentum = 0.5
@@ -74,7 +80,7 @@ if __name__ == "__main__":
     log_interval = 10
 
     random_seed = 1
-    torch.backends.cudnn.enabled = False
+    torch.backends.cudnn.enabled = True
     torch.manual_seed(random_seed)
     
     train_loader = torch.utils.data.DataLoader(
@@ -98,7 +104,10 @@ if __name__ == "__main__":
 
 
     # NN and Data setup.
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    print("Training using device: ", device)
     network = Net()
+    network.to(device)
 
     # PyTorch Optimizer
     optimizer = optim.SGD(network.parameters(), lr=learning_rate,
@@ -117,10 +126,10 @@ if __name__ == "__main__":
     
 
     # Training
-    test()
+    test(device)
     for epoch in range(1, n_epochs + 1):
-        train(epoch)
-        test()
+        train(epoch, device)
+        test(device)
 
     # Plot results
 
