@@ -4,6 +4,8 @@
 #SBATCH -n 1
 #SBATCH -N 1
 
+echo `basename $0`
+
 if [[ $(hostname -s) == 'aladdinsane' ]]; then 
     BASE_DIR=/mnt/Data/kaggle/dogs-vs-cats-small
     container_home=${HOME}/workspace/containers

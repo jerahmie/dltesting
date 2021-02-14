@@ -55,9 +55,6 @@ def main():
         target_size=(150, 150),
         batch_size=32,
         class_mode='binary')
-    
-
-    fnames = [os.path.oin(train_cats_dir, fname) for fname in os.]
 
     history = model.fit_generator(
         train_generator,
